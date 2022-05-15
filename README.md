@@ -5,3 +5,4 @@ Make sure to go into the script and update the following settings to your liking
 - spinFlair: set this to true to enable spin on your flair
 - useTrail: set this to true to enable the trail on your flair
 - displayName: set this to your Display Name (not your reserved name, using the reserved name would be better but it's a lot more work to implement that)
+- addSpinToAllBalls: set this to true to enable the spin effect to all balls
