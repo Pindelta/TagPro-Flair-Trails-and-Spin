@@ -1,19 +1,25 @@
 // ==UserScript==
 // @name            TagPro Flair Trails and Spinner
-// @version         0.1
+// @version         0.2
 // @description     Have sick trails for all your flairs just like the arc reactor. (Without having to level up) But wait there's more. You can also have your flairs spin like the level 4 donor flair absolutely free.
-// @include         https://tagpro.koalabeast.com/game
-// @include         https://tagpro.koalabeast.com/game?*
-// @include         https://tagpro-maptest-dallas.koalabeast.com*
+// @include         https://tagpro.koalabeast.com*
+// @include         https://koalabeast.com*
 // @author          Pindelta
+// @supportURL      https://www.reddit.com/message/compose/?to=Pindelta
+// @namespace       https://github.com/Pindelta/TagPro-Flair-Trails-and-Spinner
+
 // ==/UserScript==
+
+// - v0.2: added https://koalabeast.com* to list of domains, added option to apply spin effect to all balls
 
 // ========= SETTINGS =========
 // Set either of these to true to enable the respective effect.
 // It looks wonky with both on, so set one to true and the other to false.
 // Feel free to do turn em both on tho, it won't break anything
-const spinFlair = true;
-const useTrail = false;
+const spinFlair = false;
+const useTrail = true;
+// set this to true to add spin effect to everyone's ball
+const addSpinToAllBalls = false;
 
 // Enter your Display Name here. This is to make sure only your ball gets these effects applied to it
 const displayName = "Pindelta";
@@ -79,7 +85,7 @@ tagpro.ready(function () {
       }
     }
 
-    const shouldActivateSpin = spinFlair && isYourBall;
+    const shouldActivateSpin = spinFlair && (isYourBall || addSpinToAllBalls);
     if (
       player.sprites.flair &&
       (player.flair.description === "Level 4 Donor" || shouldActivateSpin)
