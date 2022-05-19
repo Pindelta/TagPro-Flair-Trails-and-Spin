@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name            TagPro Flair Trails and Spin
-// @version         0.3.0
+// @version         0.3.1
 // @description     Have sick trails for all your flairs just like the arc reactor. (Without having to level up) But wait there's more. You can also have your flairs spin like the level 4 donor flair absolutely free.
 // @match           *://*.koalabeast.com/*
 // @author          Pindelta
@@ -10,6 +10,7 @@
 
 // ==/UserScript==
 
+// - v0.3.1: code refactoring and cleanup
 // - v0.3.0: added settings menu in the in-game settings
 // - v0.2.2: fixed arc reactor flair not showing it's original trail, you don't need to put your display name anymore
 // - v0.2.1: changed included domains to *://*.koalabeast.com/*, which should encompass all koalabeast url variations
@@ -45,11 +46,40 @@ const customTrailDefinition = {
 tagpro.ready(function () {
   if (tpul.playerLocation == "profile") {
     $("#settings, .card:first").before(
-      '<div id=flair-trail-and-spin-select class="profile-settings block"><h3 class=header-title>Flair Trail and Spin</h3><form class=form-horizontal><div class=form-group></div><hr><div id=save-group class=form-group>'
+      `<div id=flair-trail-and-spin-select class="profile-settings block">
+        <h3 class=header-title>Flair Trail and Spin</h3>
+        <form class=form-horizontal>
+        <div class=form-group></div>
+      </div>
+      <hr>
+      <div id=save-group class=form-group></div>`
     );
 
-    $("#flair-trail-and-spin-select .form-group:first").before(
-      '<label class="col-sm-4 control-label">Effects</label><div class="col-sm-8" style="margin-bottom: 15px"><div class="checkbox"><label for="spin"><input id="spin" name="spin" type="checkbox" checked="">Enable Flair Spin</label></div><div class="checkbox"><label for="trail"><input id="trail" name="trail" type="checkbox" checked="">Enable Flair Trail</label></div></div><label class="col-sm-4 control-label">Apply Effects To All Players</label><div class="col-sm-8"><div class="checkbox"><label for="spinToAll"><input id="spinToAll" name="spinToAll" type="checkbox" checked="">Flair Spin</label></div></div>'
+    $("#flair-trail-and-spin-select .form-group:first").append(
+      `<label class="col-sm-4 control-label">Effects</label>
+      <div class="col-sm-8" style="margin-bottom: 15px">
+        <div class="checkbox">
+          <label for="spin">
+            <input id="spin" name="spin" type="checkbox" checked="">
+            Enable Flair Spin
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="trail">
+            <input id="trail" name="trail" type="checkbox" checked="">
+            Enable Flair Trail
+          </label>
+        </div>
+      </div>
+      <label class="col-sm-4 control-label">Apply Effects To All Players</label>
+      <div class="col-sm-8">
+        <div class="checkbox">
+          <label for="spinToAll">
+            <input id="spinToAll" name="spinToAll" type="checkbox" checked="">
+            Flair Spin
+          </label>
+        </div>
+      </div>`
     );
 
     $("#flair-trail-and-spin-select")
@@ -65,17 +95,8 @@ tagpro.ready(function () {
     );
     $("#script-status").css("margin-bottom", "20px");
 
-    $("#save-group button").click(function () {
-      // Get the current selection
-
-      var settings = $("#settings .js-cookie:checked")
-        .map(function (i, setting) {
-          $(setting).data("setting");
-        })
-        .get();
-
-      // Save to the cookies
-
+    $("#save-group button").on("click", function () {
+      // Save settings to site cookies
       $("#flair-trail-and-spin-select")
         .find("input")
         .each(function () {
@@ -88,8 +109,7 @@ tagpro.ready(function () {
           });
         });
 
-      // Show some feedback
-
+      // Show text to indicate settings were saved
       $("#script-status").slideDown();
       setTimeout(function () {
         $("#script-status").slideUp();
