@@ -167,7 +167,7 @@ tagpro.ready(function () {
         player.sprites.info.removeChild(player.sprites.flair);
 
       if (player.flairEmitter) {
-        var s = true && !player.dead,
+        var s = player.sprite.visible && !player.dead,
           o = s;
 
         (player.flairEmitter.emit = s),
